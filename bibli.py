@@ -1,6 +1,7 @@
 import threading
 import networkx as nx
 import matplotlib.pyplot as plt
+import random
 import time
 
 
@@ -101,20 +102,42 @@ class TaskSystem:
         plt.show()
 
 # ---===MÉTHODE DETERMINISTE===---
-    def detTestRnd(self):
-        for task_name, task in self.tasks.items():
-            for copy_task_name, copy_task in self.tasks.items():
-                if task_name != copy_task_name:
-                    # Condition 1 : 
-                    if not task.reads.isdisjoint(copy_task.writes):
-                        print(f"Conflit 1 : {task_name} lit une donnée écrite par {copy_task_name}")
-                        return False
-                    # Condition 2 : 
-                    if not task.writes.isdisjoint(copy_task.reads) or not task.writes.isdisjoint(copy_task.writes):
-                        print(f"Conflit 2 : {task_name} écrit sur une donnée lue ou écrite par {copy_task_name}")
-                        return False
+    def detTestRnd(self, nbTests=5, nbExec=5):
 
-        print("Aucun conflit")
+        for test_i in range(nbTests):
+            X = random.randint(0, 100)
+            Y = random.randint(0, 100)
+            Z = random.randint(0, 100)
+            print(f"Test {test_i+1}: état initial -> X={X}, Y={Y}, Z={Z}")
+            resultat_chaque_exec = []
+            for exec_i in range(nbExec):
+                self.setGlobalVariables(X, Y, Z)
+                self.run()
+                final_state = self.getGlobalVariables()
+                resultat_chaque_exec.append(final_state)
+                print(f"  Exécution {exec_i+1}: état final -> {final_state}")
+            if not self.allSame(resultat_chaque_exec):
+                print(f"Non déterministe pour l'initialisation X={X}, Y={Y}, Z={Z}")
+                print("États finaux observés :", resultat_chaque_exec)
+                return False
+        print("Aucune divergence détectée : le système semble déterministe.")
+        return True
+
+    def setGlobalVariables(self, x, y, z):
+        global X, Y, Z
+        X = x
+        Y = y
+        Z = z
+
+    def getGlobalVariables(self):
+        global X, Y, Z
+        return {"X": X, "Y": Y, "Z": Z}
+
+    def allSame(self, list):
+        first = list[0]
+        for element in list:
+            if element != first:
+                return False
         return True
 
 # ---===MÉTHODE DU COÛT===---
