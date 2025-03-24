@@ -7,6 +7,7 @@ import time
 
 #---===PROJET PARALLÉLISATION MAXIMALE AUTOMATIQUE===---
 # NOM : BOUGHRARA  Prénom : Soumaiya 
+# NOM : NGUYEN     Prénom : Hieu
 
 #---===CLASS TASK===---
 class Task: 
