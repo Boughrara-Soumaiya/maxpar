@@ -26,6 +26,6 @@ En outre, **MaxPar** utilise **Matplotlib** et **NetworkX** pour visualiser les 
 
 Python, Concurrence, Modules standard (threading, multiprocessing), Matplotlib et NetworkX
 
-## Créatrice
+## À propos
 
 Ce projet a été développé en binôme dans le cadre de la L3 en Systèmes d'exploitation.
